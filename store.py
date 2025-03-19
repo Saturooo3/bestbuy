@@ -4,6 +4,7 @@ from products import Product
 class Store:
     def __init__(self, product_list:list):
         self.product_list = product_list
+        print(self.product_list)
 
 
     def add_product(self, product):
@@ -15,7 +16,7 @@ class Store:
 
 
     def get_total_quantity(self) -> int:
-        return sum([product.quantity for product in self.product_list])
+        return sum([product.get_quantity() for product in self.product_list])
 
 
     def get_all_products(self) -> list[Product]:
@@ -26,7 +27,7 @@ class Store:
         total_price = 0
 
         for product, quantity in shopping_list:
-            price = product.buy(quantity)
-            total_price += price
+            order_price = product.buy(quantity)
+            total_price += order_price
 
         return total_price

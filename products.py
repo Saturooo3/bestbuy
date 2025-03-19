@@ -19,7 +19,6 @@ class Product:
             self.active = False
 
 
-
     def get_quantity(self) -> int:
         return self.quantity
 
@@ -44,7 +43,7 @@ class Product:
 
 
     def show(self):
-        return f"{self.name}, {self.price}, {self.quantity}"
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
 
     def buy(self,  quantity) -> float:

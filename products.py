@@ -16,15 +16,15 @@ class Product:
         try:
             self.name: str = name
             if not isinstance(self.name, str):
-                raise Exception("No valid name")
+                raise TypeError("No valid name")
 
             self.price: float = price
             if self.price < 0:
-                raise Exception("No prices below zero.")
+                raise ValueError("No prices below zero.")
 
             self.quantity: int = quantity
             if self.quantity < 0:
-                raise Exception("No quantity below zero")
+                raise ValueError("No quantity below zero")
             self.active = True
 
         except Exception as e:
@@ -92,6 +92,6 @@ class Product:
             if self.quantity == 0:
                 self.deactivate()
             return total_price
-        else:
-            print(f"Error while making order. Quantity of {self.name} larger then exists")
-            return 0
+
+        print(f"Error while making order. Quantity of {self.name} larger then exists")
+        return 0

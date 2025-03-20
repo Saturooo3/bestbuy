@@ -1,6 +1,6 @@
+import sys
 from store import Store
 from products import Product
-import sys
 
 
 product_list = [Product("MacBook Air M2", price=1450, quantity=100),
@@ -47,16 +47,16 @@ def get_choice_for_order(products) -> list[tuple]:
             product_choice = input("\nWhich product do you want? ")
             order_amount = input("What amount do you want? ")
 
-            if product_choice == "" or order_amount == "":
-                break
-
-            elif int(order_amount) <= 0:
+            if int(order_amount) <= 0:
                 print("Enter an amount over zero!")
                 continue
 
-            else:
+            if product_choice != "" or order_amount != "":
                 order.append((products[int(product_choice) - 1], int(order_amount)))
                 print("Product added to list!")
+
+            break
+
 
         except ValueError:
             print("Error adding product!")
@@ -83,18 +83,24 @@ dict_for_choice = {1: display_products,
 
 
 def main():
+    """
+    creates a store object with product objects and enables user to make order
+    """
     best_buy = Store(product_list)
     products = best_buy.get_all_products()
     while True:
         display_menu()
         try:
             choice = int(input("Please choose a number: "))
+
             if choice < 1 or choice > 4:
                 continue
+
             elif choice == 4:
                 sys.exit()
-            else:
-                dict_for_choice[choice](best_buy, products)
+
+            dict_for_choice[choice](best_buy, products)
+
         except ValueError:
             print("Error with your choice! Try again!")
 

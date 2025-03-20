@@ -47,27 +47,13 @@ class Product:
 
 
     def buy(self,  quantity) -> float:
-        try:
-            self.quantity -= quantity
-            if self.quantity == 0:
-                self.deactivate()
-
-            elif self.quantity < 0:
-                raise Exception(f"Quantity of {self.name} larger then exists")
-
-        except Exception as e:
-            print(e)
-
-        total_price: float  = self.price * quantity
-        return total_price
-
-
-
-
-
-
-
-
-
-
+            if self.quantity >= quantity:
+                self.quantity -= quantity
+                total_price: float = self.price * quantity
+                if self.quantity == 0:
+                    self.deactivate()
+                return total_price
+            else:
+                print(f"Error while making order. Quantity of {self.name} larger then exists")
+                return 0
 

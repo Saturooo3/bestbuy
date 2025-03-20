@@ -27,7 +27,6 @@ class Store:
         total_price = 0
 
         for product, quantity in shopping_list:
-            order_price = product.buy(quantity)
-            total_price += order_price
+            total_price += product.buy(quantity)
 
         return total_price

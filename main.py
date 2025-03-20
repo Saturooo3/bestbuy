@@ -1,5 +1,6 @@
 from store import Store
 from products import Product
+import sys
 
 
 product_list = [Product("MacBook Air M2", price=1450, quantity=100),
@@ -13,7 +14,8 @@ def display_menu() -> None:
     prints the help menu
     """
     print("\n\tStore Menu\n\t----------")
-    print("1. List all products in the store\n2. Show total amount in store\n3. Make an order\n4. Quit")
+    print("1. List all products in the store\n2. Show total amount in store\n"
+          "3. Make an order\n4. Quit")
 
 
 def display_products(best_buy, products: list) -> None:
@@ -21,7 +23,8 @@ def display_products(best_buy, products: list) -> None:
     gets a list and prints the list
     """
     print("______")
-    [print(f"{index+1}. {product.show()}") for index, product in enumerate(products)]
+    for index, product in enumerate(products):
+        print(f"{index + 1}. {product.show()}")
     print("______")
 
 
@@ -89,12 +92,11 @@ def main():
             if choice < 1 or choice > 4:
                 continue
             elif choice == 4:
-                exit()
+                sys.exit()
             else:
                 dict_for_choice[choice](best_buy, products)
-        except ValueError as e:
+        except ValueError:
             print("Error with your choice! Try again!")
-
 
 
 if __name__ == "__main__":

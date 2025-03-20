@@ -16,21 +16,28 @@ class Store:
         :param product_list: list of products with tuples as elements
         """
         self.product_list = product_list
-        print(self.product_list)
 
 
     def add_product(self, product):
         """
         adds new product to list of products
         """
-        self.product_list.append(product)
+        if product in self.product_list:
+            print(f" {product.name} is already in the store.")
+        else:
+            print(f"Added {product.name} to the store.")
+            self.product_list.append(product)
 
 
     def remove_product(self, product):
         """
         removes product from list of products
         """
-        self.product_list.remove(product)
+        if product in self.product_list:
+            self.product_list.remove(product)
+            print(f"Removed {product.name} from the store.")
+        else:
+            print(f"Error: {product.name} is not in the store.")
 
 
     def get_total_quantity(self) -> int:

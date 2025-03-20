@@ -5,32 +5,35 @@ class Product:
     Attributes:
         name, price, quantity
     """
-    def __init__(self, name:str, price: int, quantity:int):
+
+    def __init__(self, name: str, price: float, quantity: int):
         """
         Initializes a Product object.
 
-        :param name: name of product
-        :param price: price of product
-        :param quantity: quantity of product
+        :param name: name of product (string)
+        :param price: price of product (float)
+        :param quantity: quantity of product (integer)
         """
-        try:
-            self.name: str = name
-            if not isinstance(self.name, str):
-                raise TypeError("No valid name")
 
-            self.price: float = price
-            if self.price < 0:
-                raise ValueError("No prices below zero.")
+        if not isinstance(name, str):
+            raise TypeError("Invalid name: must be a string.")
 
-            self.quantity: int = quantity
-            if self.quantity < 0:
-                raise ValueError("No quantity below zero")
-            self.active = True
+        if not isinstance(price, (int, float)):
+            raise TypeError("Invalid price: must be a number.")
 
-        except Exception as e:
-            print(e)
-            self.active = False
+        if price < 0:
+            raise ValueError("No prices below zero.")
 
+        if not isinstance(quantity, int):
+            raise TypeError("Invalid quantity: must be an integer.")
+
+        if quantity < 0:
+            raise ValueError("No quantity below zero.")
+
+        self.name = name
+        self.price = price
+        self.quantity = quantity
+        self.active = True
 
     def get_quantity(self) -> int:
         """

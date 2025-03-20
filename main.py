@@ -45,23 +45,25 @@ def get_choice_for_order(products) -> list[tuple]:
     while True:
         try:
             product_choice = input("\nWhich product do you want? ")
+            if product_choice == "":
+                break
+
             order_amount = input("What amount do you want? ")
+            if order_amount == "":
+                break
 
             if int(order_amount) <= 0:
                 print("Enter an amount over zero!")
                 continue
 
-            if product_choice != "" or order_amount != "":
-                order.append((products[int(product_choice) - 1], int(order_amount)))
-                print("Product added to list!")
-
-            break
-
+            order.append((products[int(product_choice) - 1], int(order_amount)))
+            print("Product added to list!")
 
         except ValueError:
             print("Error adding product!")
         except IndexError:
             print("Choose an offered product from the store!")
+
     return order
 
 
@@ -71,10 +73,21 @@ def get_order(best_buy, products) -> None:
     """
     display_products(best_buy, products)
     print("When you want to finish order, enter empty text.")
+
     order = get_choice_for_order(products)
+
+    if not order:  # ✅ If the order is empty, exit without charging
+        print("No products were ordered.")
+        return
+
     total_price = best_buy.order(order)
-    if total_price > 0:
-        print(f"\n********\nOrder made! Total payment: ${total_price}")
+
+    print(f"\n********\nOrder made! Total payment: ${total_price}")
+
+    for product in order:
+        if product[0].quantity == 0:
+            best_buy.remove_product(product[0])
+
 
 dict_for_choice = {1: display_products,
                    2: display_total_amount,
@@ -87,7 +100,7 @@ def main():
     creates a store object with product objects and enables user to make order
     """
     best_buy = Store(product_list)
-    products = best_buy.get_all_products()
+
     while True:
         display_menu()
         try:
@@ -99,6 +112,7 @@ def main():
             elif choice == 4:
                 sys.exit()
 
+            products = best_buy.get_all_products()
             dict_for_choice[choice](best_buy, products)
 
         except ValueError:

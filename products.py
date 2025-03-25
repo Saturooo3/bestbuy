@@ -63,7 +63,7 @@ class Product:
         :param quantity: quantity of product
         """
         self.quantity = quantity
-        print(f"Total amount of {self.name} is stocked to {self.quantity}.")
+        print(f"\nTotal amount of {self.name} is stocked to {self.quantity}.")
         if self.quantity <= 0:
             self.deactivate()
 
@@ -90,8 +90,10 @@ class Product:
         :param quantity: quantity of product, that is ordered
         """
         if self.quantity >= quantity:
-            self.quantity -= quantity
+            new_quantity = self.quantity - quantity
+            self.set_quantity(new_quantity)
             total_price: float = self.price * quantity
+
             if self.quantity == 0:
                 self.deactivate()
             return total_price

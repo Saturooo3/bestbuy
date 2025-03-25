@@ -15,6 +15,10 @@ class Store:
 
         :param product_list: list of products with tuples as elements
         """
+        for product in product_list:
+            if not isinstance(product, Product):
+                raise TypeError(f"Invalid item in product list: {product}")
+
         self.product_list = product_list
 
 
@@ -51,7 +55,7 @@ class Store:
         """
         return list of offered products, that are available
         """
-        return [product for product in self.product_list if product.quantity > 0]
+        return [product for product in self.product_list if product.is_active()]
 
 
     def order(self, shopping_list: list[tuple]) -> float:

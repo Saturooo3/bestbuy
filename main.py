@@ -3,12 +3,6 @@ from store import Store
 from products import Product
 
 
-product_list = [Product("MacBook Air M2", price=1450, quantity=100),
-                Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-                Product("Google Pixel 7", price=500, quantity=250),
-               ]
-
-
 def display_menu() -> None:
     """
     prints the help menu
@@ -44,9 +38,11 @@ def get_choice_for_order(products) -> list[tuple]:
 
     while True:
         try:
-            product_choice = input("\nWhich product do you want? ")
+            product_choice = input("\nEnter the number of the product: ")
             if product_choice == "":
                 break
+            index = int(product_choice) -1
+            product = products[index]
 
             order_amount = input("What amount do you want? ")
             if order_amount == "":
@@ -56,7 +52,11 @@ def get_choice_for_order(products) -> list[tuple]:
                 print("Enter an amount over zero!")
                 continue
 
-            order.append((products[int(product_choice) - 1], int(order_amount)))
+            if product.get_quantity() < int(order_amount):
+                print(f"Available quantity: {product.get_quantity()}.")
+                continue
+
+            order.append((product, int(order_amount)))
             print("Product added to list!")
 
         except ValueError:
@@ -76,30 +76,36 @@ def get_order(best_buy, products) -> None:
 
     order = get_choice_for_order(products)
 
-    if not order:  # ✅ If the order is empty, exit without charging
+    if not order:
         print("No products were ordered.")
         return
 
     total_price = best_buy.order(order)
-
     print(f"\n********\nOrder made! Total payment: ${total_price}")
-
-    for product in order:
-        if product[0].quantity == 0:
-            best_buy.remove_product(product[0])
-
-
-dict_for_choice = {1: display_products,
-                   2: display_total_amount,
-                   3: get_order,
-                   }
 
 
 def main():
     """
     creates a store object with product objects and enables user to make order
     """
-    best_buy = Store(product_list)
+    try:
+        product_list = [Product("MacBook Air M2", price=1450, quantity=100),
+                        Product("Bose QuietComfort Earbuds", price=250,
+                                quantity=500),
+                        Product("Google Pixel 7", price=500, quantity=250)
+                        ]
+
+        best_buy = Store(product_list)
+    except TypeError as e:
+        print("Store initialization failed", e)
+        sys.exit()
+
+
+    dict_for_choice = {1: display_products,
+                       2: display_total_amount,
+                       3: get_order,
+                       4: sys.exit
+                       }
 
     while True:
         display_menu()
@@ -110,7 +116,7 @@ def main():
                 continue
 
             elif choice == 4:
-                sys.exit()
+                dict_for_choice[choice]()
 
             products = best_buy.get_all_products()
             dict_for_choice[choice](best_buy, products)
